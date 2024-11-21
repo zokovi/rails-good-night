@@ -78,8 +78,9 @@ class SleepsController < ApplicationController
   def end_sleep
     @sleep = find_latest_sleep(end_sleep_params[:user_id])
 
-    if @sleep.nil?
+    if @sleep.nil? || !@sleep.sleep_end_time.nil?
       render json: { error: "No sleep started for user" }, status: :not_found
+      return
     end
 
     duration_minutes = ((Time.now - @sleep.sleep_start_time) / 60).to_i
