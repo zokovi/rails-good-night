@@ -4,7 +4,8 @@ class SleepsController < ApplicationController
   # GET /sleeps
   def index
     user_id = params[:user_id]
-    limit = params[:limit] || 5
+    limit = params[:limit]
+    limit = 5 if limit == nil || limit.to_i < 1
 
     if user_id
       @sleeps = Sleep.where(user_id: user_id).limit(limit)
