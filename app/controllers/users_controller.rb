@@ -3,7 +3,8 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
+    limit = params[:limit] || 5
+    @users = User.limit(limit)
 
     render json: @users
   end
