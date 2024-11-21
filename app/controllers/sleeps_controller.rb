@@ -56,6 +56,40 @@ class SleepsController < ApplicationController
   # DELETE /sleeps/1
   def destroy
     @sleep.destroy
+    render json: { message: "Sleep record deleted" }
+  end
+
+  # POST /sleeps/start_sleep
+  def start_sleep
+    latest_sleep = find_latest_sleep(start_sleep_params[:user_id])
+    if latest_sleep && latest_sleep.sleep_end_time.nil?
+      latest_sleep.destroy
+    end
+
+    @sleep = Sleep.new(start_sleep_params)
+    if @sleep.save
+      render json: @sleep, status: :created, location: @sleep
+    else
+      render json: @sleep.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /sleeps/end_sleep
+  def end_sleep
+    @sleep = find_latest_sleep(end_sleep_params[:user_id])
+
+    if @sleep.nil?
+      render json: { error: "No sleep started for user" }, status: :not_found
+    end
+
+    duration_minutes = ((Time.now - @sleep.sleep_start_time) / 60).to_i
+    @sleep.update(sleep_end_time: Time.now, duration_minutes: duration_minutes)
+
+    if @sleep.save
+      render json: @sleep
+    else
+      render json: @sleep.errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -67,5 +101,17 @@ class SleepsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def sleep_params
       params.require(:sleep).permit(:user_id, :sleep_start_time, :sleep_end_time, :duration_minutes)
+    end
+
+    def start_sleep_params
+      params.require(:users).permit(:user_id).merge(sleep_start_time: Time.now)
+    end
+
+    def end_sleep_params
+      params.require(:users).permit(:user_id)
+    end
+
+    def find_latest_sleep(user_id)
+      Sleep.where(user_id: user_id).order(sleep_start_time: :desc).first
     end
 end
