@@ -23,6 +23,18 @@ class SleepsController < ApplicationController
 
   # POST /sleeps
   def create
+    # if adding sleep manually (manual track)
+    # make sure that all required parameters are present
+    missing_params = []
+    %i[user_id sleep_start_time sleep_end_time duration_minutes].each do |param|
+      missing_params << param unless params[:sleep].key?(param)
+    end
+
+    unless missing_params.empty?
+      render json: { error: "Missing parameters: #{missing_params.join(', ')}" }, status: :unprocessable_entity
+      return
+    end
+
     @sleep = Sleep.new(sleep_params)
 
     if @sleep.save
