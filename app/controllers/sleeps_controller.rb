@@ -97,6 +97,8 @@ class SleepsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_sleep
       @sleep = Sleep.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "Sleep record not found" }, status: :not_found
     end
 
     # Only allow a list of trusted parameters through.
