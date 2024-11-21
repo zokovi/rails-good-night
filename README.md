@@ -1,24 +1,24 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Starting the Containerized Rails App
 
-Things you may want to cover:
+To start the containerized Rails application, follow these steps:
 
-* Ruby version
+1. Build the Docker image:
+  ```sh
+  docker-compose build
+  ```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+2. Run the Docker containers:
+  ```sh
+  docker-compose up -d
+  ```
+3. Create the database:
+  ```sh
+  docker-compose run web rails db:create
+  ```
+4. Run the migrations:
+  ```sh
+  docker-compose run web rails db:migrate
+  ```
+5. Access the apis at `http://localhost:3000`.
