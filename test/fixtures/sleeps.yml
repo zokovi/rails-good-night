@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  sleep_start_time: 2024-11-21 21:23:14
+  sleep_end_time: 2024-11-21 21:23:14
+  duration_minutes: 1
+
+two:
+  user: two
+  sleep_start_time: 2024-11-21 21:23:14
+  sleep_end_time: 2024-11-21 21:23:14
+  duration_minutes: 1
