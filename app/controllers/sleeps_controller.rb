@@ -3,7 +3,14 @@ class SleepsController < ApplicationController
 
   # GET /sleeps
   def index
-    @sleeps = Sleep.all
+    user_id = params[:user_id]
+    limit = params[:limit] || 5
+
+    if user_id
+      @sleeps = Sleep.where(user_id: user_id).limit(limit)
+    else
+      @sleeps = Sleep.all.limit(limit)
+    end
 
     render json: @sleeps
   end
