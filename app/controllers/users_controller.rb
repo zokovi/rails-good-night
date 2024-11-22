@@ -51,6 +51,18 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /users/:id/unfollow
+  def unfollow
+    @user_to_unfollow = User.find(params[:id])
+    @follow = Follow.find_by(follower_id: params[:follower_id], following: @user_to_unfollow)
+
+    if @follow.destroy
+      render json: { message: "Successfully unfollowed user." }, status: :ok
+    else
+      render json: @follow.errors, status: :unprocessable
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
