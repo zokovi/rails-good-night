@@ -63,6 +63,15 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/:id/following_sleeps
+  def following_sleeps
+    @user = User.find(params[:id])
+    @following_users_ids = Follow.where(follower_id: @user.id).pluck(:following_id)
+    @sleeps = Sleep.where(user_id: @following_users_ids).where.not(sleep_end_time: nil).order(duration_minutes: :desc)
+
+    render json: @sleeps
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
