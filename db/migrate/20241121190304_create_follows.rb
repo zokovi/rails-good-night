@@ -11,5 +11,3 @@ class CreateFollows < ActiveRecord::Migration[7.0]
     add_index :follows, [:follower_id, :following_id], unique: true
   end
 end
-
-# todo: execute the migration, add 
