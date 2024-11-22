@@ -39,6 +39,18 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  # POST /users/:id/follow
+  def follow
+    @user_to_follow = User.find(params[:id])
+    @follow = Follow.new(follower_id: params[:follower_id], following: @user_to_follow)
+
+    if @follow.save
+      render json: { message: "Successfully followed user." }, status: :created
+    else
+      render json: @follow.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
