@@ -107,11 +107,11 @@ class SleepsController < ApplicationController
     end
 
     def start_sleep_params
-      params.require(:users).permit(:user_id).merge(sleep_start_time: Time.now)
+      params.permit(:user_id).merge(sleep_start_time: Time.now)
     end
 
     def end_sleep_params
-      params.require(:users).permit(:user_id)
+      params.permit(:user_id)
     end
 
     def find_latest_sleep(user_id)
