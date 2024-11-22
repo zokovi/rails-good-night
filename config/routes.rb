@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     member do
       post 'follow' => 'users#follow'
       post 'unfollow' => 'users#unfollow'
+      get 'following_sleeps' => 'users#following_sleeps'
     end
   end
 
